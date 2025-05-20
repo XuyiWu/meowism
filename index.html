@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>给我最爱的你</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,9 +31,13 @@
       object-fit: cover;
       position: absolute;
       opacity: 0;
-      border: 15px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 30px rgba(255, 192, 203, 0.6);
+      border: 15px solid transparent;
+      border-radius: 40px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
       animation: fade 30s infinite;
+      background-image: linear-gradient(45deg, #ff69b4, #ffa07a, #ffff66, #00ffff, #9370db);
+      background-origin: border-box;
+      background-clip: content-box, border-box;
     }
 
     .slideshow img:nth-child(1) { animation-delay: 0s; }
@@ -115,14 +118,14 @@
 <body>
 
   <div class="slideshow">
-    <img src="photo1.jpeg" alt="潜水" />
-    <img src="photo2.jpeg" alt="骑马" />
-    <img src="photo3.jpeg" alt="雪地" />
+    <img src="photo1.jpeg" alt="合影1" />
+    <img src="photo2.jpeg" alt="合影2" />
+    <img src="photo3.jpeg" alt="合影3" />
   </div>
 
   <canvas id="canvas"></canvas>
 
-  <h1>点击爱心，解锁我对你的爱 💖</h1>
+  <h1>你知道该怎么做 💖</h1>
   <button class="heart-button" onclick="revealLove()">❤️</button>
   <div id="love-output" class="love-text"></div>
   <div id="final-message" class="final-message"></div>
@@ -134,6 +137,10 @@
 
   <script>
     const loveMessages = [
+      "网中情意绕心头",
+      "太多话语慢慢流",
+      "卡顿偏偏在深夜",
+      "了无回应惹我愁",
       "我爱你 🇨🇳 (Chinese)",
       "I love you 🇬🇧 (English)",
       "Je t’aime 🇫🇷 (French)",
@@ -154,7 +161,7 @@
     function revealLove() {
       if (music.paused) {
         music.play().catch(err => {
-          console.log("无法自动播放音乐，需用户手动启动。");
+          console.log("需要用户点击才能播放音乐");
         });
       }
 
