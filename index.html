@@ -1,17 +1,20 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <title>给我最爱的你</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'ZCOOL XiaoWei', serif;
       color: white;
       text-align: center;
       height: 100vh;
-      background: black;
+      background: radial-gradient(ellipse at center, #1b2735 0%, #090a0f 100%);
       overflow: hidden;
     }
 
@@ -44,8 +47,14 @@
 
     h1 {
       margin-top: 60px;
-      font-size: 2rem;
-      text-shadow: 1px 1px 4px #000;
+      font-size: 2.2rem;
+      text-shadow: 2px 2px 5px #ff69b4;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff66cc, 0 0 20px #ff66cc; }
+      to { text-shadow: 0 0 20px #ff99cc, 0 0 30px #ff99cc; }
     }
 
     .heart-button {
@@ -63,18 +72,18 @@
     }
 
     .love-text {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       color: #fff;
       margin-top: 1.2rem;
-      text-shadow: 1px 1px 4px #000;
+      text-shadow: 2px 2px 4px #000;
       animation: fadeIn 0.8s ease-in-out;
     }
 
     .final-message {
       font-size: 2rem;
-      color: #ffe600;
+      color: #ffea00;
       margin-top: 2rem;
-      animation: popIn 1s ease-in-out;
+      animation: popIn 1s ease-in-out, glow 2s infinite alternate;
       text-shadow: 2px 2px 5px #000;
     }
 
@@ -92,9 +101,26 @@
       from { opacity: 0; transform: scale(0.5); }
       to { opacity: 1; transform: scale(1); }
     }
+
+    /* 星星特效 */
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: transparent url('https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/media/bg-stars.png') repeat;
+      animation: moveStars 200s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes moveStars {
+      from { background-position: 0 0; }
+      to { background-position: -10000px 5000px; }
+    }
   </style>
 </head>
 <body>
+
+  <div class="stars"></div>
 
   <div class="slideshow">
     <img src="photo1.jpeg" alt="潜水" />
@@ -102,14 +128,15 @@
     <img src="photo3.jpeg" alt="雪地" />
   </div>
 
-  <h1>点击爱心，解锁我对你的爱 ❤️</h1>
-  <button class="heart-button" onclick="revealLove()">💖</button>
+  <h1>点击爱心，解锁我对你的爱 💖</h1>
+  <button class="heart-button" onclick="revealLove()">❤️</button>
   <div id="love-output" class="love-text"></div>
   <div id="final-message" class="final-message"></div>
 
-<audio id="bg-music" loop>
-  <source src="111.mp3" type="audio/mpeg">
-</audio>
+  <audio id="bg-music" loop>
+    <source src="111.mp3" type="audio/mpeg">
+    您的浏览器不支持音频播放。
+  </audio>
 
   <script>
     const loveMessages = [
@@ -133,7 +160,7 @@
     function revealLove() {
       if (music.paused) {
         music.play().catch(err => {
-          console.log("无法自动播放音乐，用户需手动点击按钮");
+          console.log("无法自动播放音乐，需用户手动启动。");
         });
       }
 
