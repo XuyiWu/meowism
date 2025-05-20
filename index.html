@@ -1,4 +1,6 @@
+# Modify HTML to place particle canvas above slideshow and add borders to background images
 
+html_with_foreground_particles = """
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -14,7 +16,7 @@
       color: white;
       text-align: center;
       height: 100vh;
-      background: radial-gradient(ellipse at center, #1b2735 0%, #090a0f 100%);
+      background: #000;
       overflow: hidden;
     }
 
@@ -23,16 +25,18 @@
       top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: -1;
+      z-index: -3;
     }
 
     .slideshow img {
-      margin-left: -50%;
+      margin-left:-50%;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
       position: absolute;
       opacity: 0;
+      border: 15px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 30px rgba(255, 192, 203, 0.6);
       animation: fade 30s infinite;
     }
 
@@ -43,6 +47,14 @@
     @keyframes fade {
       0%, 100% { opacity: 0; }
       10%, 30% { opacity: 1; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      pointer-events: none;
     }
 
     h1 {
@@ -101,32 +113,17 @@
       from { opacity: 0; transform: scale(0.5); }
       to { opacity: 1; transform: scale(1); }
     }
-
-    /* 星星特效 */
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: transparent url('https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/media/bg-stars.png') repeat;
-      animation: moveStars 200s linear infinite;
-      z-index: -2;
-    }
-
-    @keyframes moveStars {
-      from { background-position: 0 0; }
-      to { background-position: -10000px 5000px; }
-    }
   </style>
 </head>
 <body>
-
-  <div class="stars"></div>
 
   <div class="slideshow">
     <img src="photo1.jpeg" alt="潜水" />
     <img src="photo2.jpeg" alt="骑马" />
     <img src="photo3.jpeg" alt="雪地" />
   </div>
+
+  <canvas id="canvas"></canvas>
 
   <h1>点击爱心，解锁我对你的爱 💖</h1>
   <button class="heart-button" onclick="revealLove()">❤️</button>
@@ -177,7 +174,73 @@
         }
       }
     }
+
+    // 粒子背景动画
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray = [];
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
+        this.color = 'rgba(255,' + (Math.floor(Math.random()*255)) + ',' + (Math.floor(Math.random()*255)) + ',0.8)';
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+        if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particlesArray = [];
+      for (let i = 0; i < 150; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particlesArray.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+    animateParticles();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    });
   </script>
 
 </body>
 </html>
+"""
+
+# Save the enhanced HTML file
+final_html_path = "/mnt/data/index_final.html"
+with open(final_html_path, "w", encoding="utf-8") as f:
+    f.write(html_with_foreground_particles)
+
+final_html_path
