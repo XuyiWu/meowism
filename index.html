@@ -1,6 +1,3 @@
-# Modify HTML to place particle canvas above slideshow and add borders to background images
-
-html_with_foreground_particles = """
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -236,11 +233,3 @@ html_with_foreground_particles = """
 
 </body>
 </html>
-"""
-
-# Save the enhanced HTML file
-final_html_path = "/mnt/data/index_final.html"
-with open(final_html_path, "w", encoding="utf-8") as f:
-    f.write(html_with_foreground_particles)
-
-final_html_path
