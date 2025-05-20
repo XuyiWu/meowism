@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>给我最爱的你</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      text-align: center;
+      height: 100vh;
+      background: black;
+      overflow: hidden;
+    }
+
+    .slideshow {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+
+    .slideshow img {
+      margin-left: -50%;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      position: absolute;
+      opacity: 0;
+      animation: fade 30s infinite;
+    }
+
+    .slideshow img:nth-child(1) { animation-delay: 0s; }
+    .slideshow img:nth-child(2) { animation-delay: 10s; }
+    .slideshow img:nth-child(3) { animation-delay: 20s; }
+
+    @keyframes fade {
+      0%, 100% { opacity: 0; }
+      10%, 30% { opacity: 1; }
+    }
+
+    h1 {
+      margin-top: 60px;
+      font-size: 2rem;
+      text-shadow: 1px 1px 4px #000;
+    }
+
+    .heart-button {
+      font-size: 4rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      animation: pulse 2s infinite;
+      color: #ff3366;
+      transition: transform 0.2s;
+    }
+
+    .heart-button:hover {
+      transform: scale(1.2);
+    }
+
+    .love-text {
+      font-size: 1.4rem;
+      color: #fff;
+      margin-top: 1.2rem;
+      text-shadow: 1px 1px 4px #000;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .final-message {
+      font-size: 2rem;
+      color: #ffe600;
+      margin-top: 2rem;
+      animation: popIn 1s ease-in-out;
+      text-shadow: 2px 2px 5px #000;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slideshow">
+    <img src="photo1.jpeg" alt="潜水" />
+    <img src="photo2.jpeg" alt="骑马" />
+    <img src="photo3.jpeg" alt="雪地" />
+  </div>
+
+  <h1>点击爱心，解锁我对你的爱 ❤️</h1>
+  <button class="heart-button" onclick="revealLove()">💖</button>
+  <div id="love-output" class="love-text"></div>
+  <div id="final-message" class="final-message"></div>
+
+<audio id="bg-music" loop>
+  <source src="222.mp3" type="audio/mpeg">
+</audio>
+
+  <script>
+    const loveMessages = [
+      "我爱你 🇨🇳 (Chinese)",
+      "I love you 🇬🇧 (English)",
+      "Je t’aime 🇫🇷 (French)",
+      "Te amo 🇪🇸 (Spanish)",
+      "사랑해요 🇰🇷 (Korean)",
+      "Ti amo 🇮🇹 (Italian)",
+      "Ich liebe dich 🇩🇪 (German)",
+      "Я тебя люблю 🇷🇺 (Russian)",
+      "Aishiteru 愛してる 🇯🇵 (Japanese)",
+      "Aku cinta kamu 🇮🇩 (Indonesian)"
+    ];
+
+    let index = 0;
+    const output = document.getElementById("love-output");
+    const final = document.getElementById("final-message");
+    const music = document.getElementById("bg-music");
+
+    function revealLove() {
+      if (music.paused) {
+        music.play().catch(err => {
+          console.log("无法自动播放音乐，用户需手动点击按钮");
+        });
+      }
+
+      if (index < loveMessages.length) {
+        const p = document.createElement("p");
+        p.className = "love-text";
+        p.textContent = loveMessages[index];
+        output.appendChild(p);
+        index++;
+        if (index === loveMessages.length) {
+          setTimeout(() => {
+            final.textContent = "🌟 全世界都知道我爱你！🌟";
+          }, 800);
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
